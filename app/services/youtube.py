@@ -60,7 +60,7 @@ def search_youtube(query: str) -> str:
                     'is_embeddable': is_embeddable
                 }
             else:
-                return "No results found"
+                return {"error": "No results found"}
         
         # Handle HTTP errors
         else:
@@ -71,4 +71,4 @@ def search_youtube(query: str) -> str:
 
     # Handle request exceptions, such as network errors
     except requests.exceptions.RequestException as e:
-        return f"An error occurred while searching YouTube: {e}"
+        return {"error": f"An error occurred while searching YouTube: {str(e)}"}
