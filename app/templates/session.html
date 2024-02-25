@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Session - Karaoke App{% endblock %}
+
+{% block content %}
+    <h1>Session Name</h1>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Current Queue</h2>
+            <!-- Queue list here -->
+        </div>
+        <div class="col-md-12 mt-4">
+            <h2>Add a Song to the Queue</h2>
+            <form class="d-flex" action="/add_song" method="post">
+                <input class="form-control me-2" type="search" name="song_name" placeholder="Enter song name" aria-label="Search">
+                <button class="btn btn-outline-primary" type="submit">Add to Queue</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
