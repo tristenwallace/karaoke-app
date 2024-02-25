@@ -3,17 +3,22 @@
 {% block title %}Home - Karaoke App{% endblock %}
 
 {% block content %}
-    <h1>Welcome to Karaoke App!</h1>
-    <div class="row mt-4">
-        <div class="col-md-6 offset-md-3">
-            <h2>Find Your Favorite Karaoke Tracks</h2>
-            <form class="d-flex" action="search" method="get" id="searchForm">
-                <input class="form-control me-2" type="search" id="searchQuery" placeholder="Enter song or artist" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+    <!-- Main Content Container -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center mb-4">Welcome to the Karaoke App!</h1>
+                
+                <!-- Search Form -->
+                <form id="searchForm" class="input-group mb-3">
+                    <input type="text" class="form-control" id="searchQuery" placeholder="Enter song or artist" aria-label="Song search query">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </form>
+
+                <!-- Video or Thumbnail Container -->
+                <div id="videoContainer" class="mt-4"></div>
+            </div>
         </div>
-        <!-- Container where the video will be displayed -->
-        <div id="videoContainer" class="mt-4"></div>
     </div>
     
     
