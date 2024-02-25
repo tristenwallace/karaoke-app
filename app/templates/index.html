@@ -7,11 +7,47 @@
     <div class="row mt-4">
         <div class="col-md-6 offset-md-3">
             <h2>Find Your Favorite Karaoke Tracks</h2>
-            <form class="d-flex" action="/search" method="get">
-                <input class="form-control me-2" type="search" name="query" placeholder="Enter song or artist" aria-label="Search">
+            <form class="d-flex" action="search" method="get" id="searchForm">
+                <input class="form-control me-2" type="search" id="searchQuery" placeholder="Enter song or artist" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
+        <!-- Container where the video will be displayed -->
+        <div id="videoContainer" class="mt-4"></div>
     </div>
-    <!-- Sessions list could be added here -->
+    
+    
+    <script>
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const query = document.getElementById('searchQuery').value;
+        fetch(`/api/search?query=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.error) {
+                    if (data.is_embeddable) {
+                        const embedUrl = data.video_url.replace('watch?v=', 'embed/');
+                        const videoIframe = `<iframe width="560" height="315" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+                        document.getElementById('videoContainer').innerHTML = videoIframe;
+                    } else {
+                        // Fallback to thumbnail with link
+                        const videoLink = `
+                            <div style="text-align: center;">
+                                <a href="${data.video_url}" target="_blank">
+                                    <img src="${data.thumbnail_url}" alt="Watch on YouTube" style="max-width: 100%; height: auto;">
+                                    <div>Watch on YouTube</div>
+                                </a>
+                            </div>`;
+                        document.getElementById('videoContainer').innerHTML = videoLink;
+                    }
+                } else {
+                    document.getElementById('videoContainer').textContent = 'No results found.';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('videoContainer').textContent = 'Error fetching video.';
+            });
+    });
+    </script>
 {% endblock %}

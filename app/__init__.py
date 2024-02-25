@@ -1,7 +1,16 @@
 from flask import Flask
-from app.routes import main_routes
+from .routes.main_routes import bp as main_bp
+from .routes.api_routes import bp as api_bp
 
 def create_app():
     app = Flask(__name__)
-    app.register_blueprint(main_routes.bp)
+    
+    # Load environment variables
+    from dotenv import load_dotenv
+    load_dotenv()
+
+    # Register blueprints
+    app.register_blueprint(main_bp)
+    app.register_blueprint(api_bp)    
+    
     return app
