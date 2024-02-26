@@ -3,18 +3,54 @@
 {% block title %}Session - Karaoke App{% endblock %}
 
 {% block content %}
-    <h1>Session Name</h1>
-    <div class="row mt-4">
-        <div class="col-md-12">
-            <h2>Current Queue</h2>
-            <!-- Queue list here -->
+<div class="container-fluid half-height mt-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Video Container -->
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/MbfoBpg6yKs" allowfullscreen></iframe>
+            </div>
         </div>
-        <div class="col-md-12 mt-4">
-            <h2>Add a Song to the Queue</h2>
-            <form class="d-flex" action="/add_song" method="post">
-                <input class="form-control me-2" type="search" name="song_name" placeholder="Enter song name" aria-label="Search">
-                <button class="btn btn-outline-primary" type="submit">Add to Queue</button>
-            </form>
+        <div class="col-lg-4">
+            <!-- Song Queue -->
+            <div class="song-queue" style="max-height: 500px; overflow-y: auto;">
+                <ul class="list-group">
+                    <!-- Dynamically populate song list here -->
+                    <li class="list-group-item">Song 1</li>
+                    <li class="list-group-item">Song 2</li>
+                    <!-- Add more songs as list items -->
+                </ul>
+            </div>
+            <!-- Queue Navigation Buttons -->
+            <div class="mt-2 d-flex justify-content-between">
+                <button class="btn btn-secondary">Previous</button>
+                <button class="btn btn-secondary">Next</button>
+            </div>
         </div>
     </div>
+
+    <!-- Add Songs to Queue -->
+    <div class="jumbotron p-4 mt-5">
+        <h3 class="text-center mb-4">Add Songs to Queue</h3>
+        <form>
+            <div class="form-group">
+                <label for="songTitle">Song Title</label>
+                <input type="text" class="form-control" id="songTitle" placeholder="Enter song title">
+            </div>
+            <div class="form-group">
+                <label for="artistName">Artist Name</label>
+                <input type="text" class="form-control" id="artistName" placeholder="Enter artist name">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Add to Queue</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+</script>
 {% endblock %}
