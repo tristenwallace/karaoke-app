@@ -39,20 +39,7 @@ def search_youtube(query: str) -> str:
                 thumbnail_url = search_result['items'][0]['snippet']['thumbnails']['high']['url']
 
                 # Check if the video is embeddable
-                videos_url = "https://www.googleapis.com/youtube/v3/videos"
-                videos_params = {
-                    'part': 'status',
-                    'id': video_id,
-                    'key': api_key
-                }
-
-                videos_response = requests.get(videos_url, params=videos_params)
-                videos_response.raise_for_status()  # Check for HTTP errors
-                videos_result = videos_response.json()
-
-                is_embeddable = False
-                if 'items' in videos_result and len(videos_result['items']) > 0:
-                    is_embeddable = videos_result['items'][0]['status']['embeddable']
+                is_embeddable = is_video_embeddable(video_id, api_key)
 
                 return {
                     'video_url': video_url,
@@ -72,3 +59,30 @@ def search_youtube(query: str) -> str:
     # Handle request exceptions, such as network errors
     except requests.exceptions.RequestException as e:
         return {"error": f"An error occurred while searching YouTube: {str(e)}"}
+    
+
+
+def is_video_embeddable(video_id: str, api_key: str) -> bool:
+    videos_url = "https://www.googleapis.com/youtube/v3/videos"
+    videos_params = {
+        'part': 'status',
+        'id': video_id,
+        'key': api_key
+    }
+
+    try:
+        videos_response = requests.get(videos_url, params=videos_params)
+        videos_response.raise_for_status()  # Check for HTTP errors
+        videos_result = videos_response.json()
+
+        if 'items' in videos_result and len(videos_result['items']) > 0:
+            
+            # Visually troubleshoot video embeddability 
+            print(f"embeddable: {videos_result['items'][0]['status']['embeddable']}")
+            print(f"uploadStatus: {videos_result['items'][0]['status']['uploadStatus']}")
+            print(f"privacyStatus: {videos_result['items'][0]['status']['privacyStatus']}")
+            print(f"publicStatsViewable: {videos_result['items'][0]['status']['publicStatsViewable']}")
+            return videos_result['items'][0]['status']['embeddable']
+
+    except requests.exceptions.RequestException:
+        return False
