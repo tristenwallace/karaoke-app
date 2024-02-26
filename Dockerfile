@@ -7,6 +7,14 @@ WORKDIR /karaoke-app
 # Copy the current directory contents into the container at /karaoke-app
 COPY . /karaoke-app
 
+# Install system dependencies required for mysqlclient
+RUN apt-get update && apt-get install -y \
+    python3-dev \
+    default-libmysqlclient-dev \
+    build-essential \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 

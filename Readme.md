@@ -24,55 +24,46 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Setting Up for Development
 
-1. **Clone the repository**
+1. **Fork and Clone the repository**
+
+After forking the repo, you can clone it to your local machine.
+
+
+2. **Configure Environment Variables**
+
+Before running the application, ensure that all necessary environment variables are set. These include database connection settings, application secret keys, and other necessary configurations. These should be set in a .env file at the root of the project directory.
 
 ```
-git clone https://github.com/yourusername/karaoke-app.git
-cd karaoke-app
-```
+YOUTUBE_API_KEY=youtube_api_key
 
-2. **Create and activate a virtual environment**
-
-```
-python3 -m venv venv
-source venv/bin/activate # On Windows use venv\Scripts\activate
-```
-
-3.  **Install required packages**
+MYSQL_ROOT_PASSWORD=your_root_password
+MYSQL_DATABASE=your_database_name
+MYSQL_USER=your_user_name
+MYSQL_PASSWORD=your_password
+DATABASE_HOST=db
 
 ```
-pip install -r requirements.txt
-```
 
-4. **Set up environment variables**
 
-Copy the `.env.example` file to a new file named `.env` and fill in the required API keys and other configurations.
+3. **Start the Application**
 
-5. **Run the Flask application locally**
+With Docker and Docker Compose installed, and the environment variables configured, you can start the application by running the following command from the root of the project directory:
 
 ```
-flask run
+docker-compose up -d
 ```
+This command builds and starts the containers in detached mode. Your application container and MySQL database container will be started.
 
-The application will be available at `http://localhost:5000`.
-
-### Dockerization
-
-To containerize the application using Docker, follow these steps:
-
-1. **Build the Docker image**
+4. **Accessing the Application**
+After the containers are up and running, you can access the Flask application by running the following command from the root of the project directory:
 
 ```
-docker build -t karaoke-app:latest .
+docker-compose exec web flask run
 ```
 
-2. **Run the container**
+Then navigate to `http://127.0.0.1:5000` in your web browser (assuming port 5000 is exposed in your docker-compose.yml).
 
-```
-docker run -p 5000:5000 karaoke-app:latest
-```
 
-The application will now be accessible at `http://localhost:5000`.
 
 ### Deployed version on Google Cloud
 

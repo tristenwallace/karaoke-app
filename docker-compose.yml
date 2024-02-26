@@ -1,0 +1,28 @@
+version: '3.11'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+    volumes:
+      - .:/karaoke-app
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: mysql:5.7
+    environment:
+      DATABASE_HOST: db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    env_file:
+      - .env
+volumes:
+  mysql-data:
