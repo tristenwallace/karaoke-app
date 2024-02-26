@@ -1,0 +1,4 @@
+/* Custom style to make each row 50% viewport height */
+.half-height {
+    height: 50vh; /* Set minimum height to 50% of the viewport height */
+}

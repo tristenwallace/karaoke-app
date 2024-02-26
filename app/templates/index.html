@@ -3,56 +3,32 @@
 {% block title %}Home - Karaoke App{% endblock %}
 
 {% block content %}
-    <!-- Main Content Container -->
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h1 class="text-center mb-4">Welcome to the Karaoke App!</h1>
-                
-                <!-- Search Form -->
-                <form id="searchForm" class="input-group mb-3">
-                    <input type="text" class="form-control" id="searchQuery" placeholder="Enter song or artist" aria-label="Song search query">
-                    <button class="btn btn-outline-secondary" type="submit">Search</button>
-                </form>
-
-                <!-- Video or Thumbnail Container -->
-                <div id="videoContainer" class="mt-4"></div>
-            </div>
+<div class="container-fluid half-height">
+    <div class="row h-100">
+        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center bg-light">
+            <h2>Create a Session</h2>
+            <form>
+                <div class="form-group">
+                    <label for="createSessionName">Your Name</label>
+                    <input type="text" class="form-control" id="createSessionName" placeholder="Enter your name" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Start Session</button>
+            </form>
+        </div>
+        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center bg-dark text-white">
+            <h2>Join a Session</h2>
+            <form>
+                <div class="form-group">
+                    <label for="joinSessionName">Your Name</label>
+                    <input type="text" class="form-control" id="joinSessionName" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="joinSessionCode">Session Code</label>
+                    <input type="text" class="form-control" id="joinSessionCode" placeholder="Enter session code" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Join Session</button>
+            </form>
         </div>
     </div>
-    
-    
-    <script>
-    document.getElementById('searchForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const query = document.getElementById('searchQuery').value;
-        fetch(`/api/search?query=${encodeURIComponent(query)}`)
-            .then(response => response.json())
-            .then(data => {
-                if (!data.error) {
-                    if (data.is_embeddable) {
-                        const embedUrl = data.video_url.replace('watch?v=', 'embed/');
-                        const videoIframe = `<iframe width="560" height="315" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
-                        document.getElementById('videoContainer').innerHTML = videoIframe;
-                    } else {
-                        // Fallback to thumbnail with link
-                        const videoLink = `
-                            <div style="text-align: center;">
-                                <a href="${data.video_url}" target="_blank">
-                                    <img src="${data.thumbnail_url}" alt="Watch on YouTube" style="max-width: 100%; height: auto;">
-                                    <div>Watch on YouTube</div>
-                                </a>
-                            </div>`;
-                        document.getElementById('videoContainer').innerHTML = videoLink;
-                    }
-                } else {
-                    document.getElementById('videoContainer').textContent = 'No results found.';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('videoContainer').textContent = 'Error fetching video.';
-            });
-    });
-    </script>
+</div>
 {% endblock %}
