@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, url_for, render_template
+from flask import Blueprint, request, redirect, url_for, render_template, flash
 from app.services import sessions
 
 bp = Blueprint('main', __name__)
@@ -25,11 +25,14 @@ def add_song_to_queue(session_code):
     song_title = request.form.get('song_title')
     artist = request.form.get('artist')
 
-    if sessions.add_song_to_session_queue(session_code, song_title, artist):
+    result = sessions.add_song_to_session_queue(session_code, song_title, artist)
+    
+    if result['success']:
+        flash('Song added to queue successfully', 'success')  # Display success message
         return redirect(url_for('main.session', session_code=session_code))
     else:
-        # Handle the case where the session does not exist or other errors
-        pass  # Implement as needed
+        flash(result['message'], 'danger')  # Display error message
+        return redirect(url_for('main.session', session_code=session_code))
 
 @bp.route('/search')
 def temp_search():

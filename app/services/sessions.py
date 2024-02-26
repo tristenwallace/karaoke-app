@@ -39,8 +39,9 @@ def add_song_to_session_queue(session_code, song_title, artist):
         # Check if search_youtube returned an error
         if 'error' in search_result:
             # Handle the error, e.g., by logging it and informing the user
-            print(search_result)  # Log the error for debugging
-            return False
+            print(search_result['error'])  # Log the error for debugging
+            return {'success':False,
+                    'message':search_result['error']}
         
         video_url = search_result.get('video_url', '')
         video_thumbnail = search_result.get('thumbnail_url', '')
@@ -56,5 +57,5 @@ def add_song_to_session_queue(session_code, song_title, artist):
         )
         db.session.add(new_song)
         db.session.commit()
-        return True
-    return False
+        return {'success':True}
+    return {'success':False}

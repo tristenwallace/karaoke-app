@@ -54,7 +54,7 @@ def search_youtube(query: str) -> str:
             error_message = f"Failed to search YouTube, status code: {search_response.status_code}"
             if search_result.get('error'):
                 error_message += f", message: {search_result['error']['message']}"
-            return error_message
+            return {"error": error_message}
 
     # Handle request exceptions, such as network errors
     except requests.exceptions.RequestException as e:

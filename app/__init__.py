@@ -12,6 +12,8 @@ load_dotenv()
 def create_app():
     app = Flask(__name__)
     
+    app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
+    
     # Load environment variables
     username = os.getenv('MYSQL_USER')
     password = os.getenv('MYSQL_PASSWORD')
