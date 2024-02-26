@@ -4,30 +4,36 @@
 
 {% block content %}
 <div class="container-fluid mt-4">
-    <div class="row">
-        <div class="col-lg-8">
-            <!-- Video Container -->
-            <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/MbfoBpg6yKs" allowfullscreen></iframe>
+    <div class="container-fluid mt-4">
+        <!-- Video and Queue Section -->
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Video Container -->
+                <div id="videoContainer" class="embed-responsive embed-responsive-16by9">
+                    <!-- Video will be embedded here by JavaScript -->
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <!-- Song Queue -->
+                <div id="songQueue" class="song-queue" style="max-height: 500px; overflow-y: auto;">
+                    <ul class="list-group">
+                        {% for song in song_queue %}
+                        <li class="list-group-item" data-video-link="{{ song.video_link }}" data-is-embeddable="{{ song.is_embeddable }}" data-video-thumbnail="{{ song.video_thumbnail }}">
+                            {{ song.song_title }} - {{ song.artist }}
+                            {% if not song.is_embeddable %}
+                            <a href="{{ song.video_link }}" target="_blank">Watch on YouTube</a>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- Queue Navigation Buttons -->
+                <div class="mt-2 d-flex justify-content-between">
+                    <button id="prevSong" class="btn btn-secondary">Previous</button>
+                    <button id="nextSong" class="btn btn-secondary">Next</button>
+                </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <!-- Song Queue -->
-            <div class="song-queue" style="max-height: 500px; overflow-y: auto;">
-                <ul class="list-group">
-                    <!-- Dynamically populate song list here -->
-                    <li class="list-group-item">Song 1</li>
-                    <li class="list-group-item">Song 2</li>
-                    <!-- Add more songs as list items -->
-                </ul>
-            </div>
-            <!-- Queue Navigation Buttons -->
-            <div class="mt-2 d-flex justify-content-between">
-                <button class="btn btn-secondary">Previous</button>
-                <button class="btn btn-secondary">Next</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Add Songs to Queue -->
     <div class="jumbotron p4 mt-5">
@@ -55,7 +61,46 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
+    <script>
+        let currentSongIndex = 0;
+        const songQueueItems = document.querySelectorAll('#songQueue .list-group-item');
+        const videoContainer = document.getElementById('videoContainer');
 
-</script>
+        function embedVideo(videoLink, isEmbeddable, thumbnailUrl) {
+            if (isEmbeddable) {
+                videoContainer.innerHTML = `<iframe class="embed-responsive-item" src="${videoLink.replace('watch?v=', 'embed/')}" allowfullscreen></iframe>`;
+            } else {
+                videoContainer.innerHTML = `
+                    <img src="${thumbnailUrl}" class="embed-responsive-item" alt="Video Thumbnail">
+                    <div class="alert alert-info mt-2">This video is not available for embedding. <a href="${videoLink}" target="_blank">Watch on YouTube</a></div>
+                `;
+            }
+        }
+
+        function updateVideo() {
+        if (songQueueItems[currentSongIndex]) {
+            const videoLink = songQueueItems[currentSongIndex].getAttribute('data-video-link');
+            const isEmbeddable = songQueueItems[currentSongIndex].getAttribute('data-is-embeddable') === 'True';
+            const thumbnailUrl = songQueueItems[currentSongIndex].getAttribute('data-video-thumbnail'); // Fetch the thumbnail URL
+            embedVideo(videoLink, isEmbeddable, thumbnailUrl);
+        }
+    }
+
+        document.getElementById('prevSong').addEventListener('click', function() {
+            if (currentSongIndex > 0) {
+                currentSongIndex--;
+                updateVideo();
+            }
+        });
+
+        document.getElementById('nextSong').addEventListener('click', function() {
+            if (currentSongIndex < songQueueItems.length - 1) {
+                currentSongIndex++;
+                updateVideo();
+            }
+        });
+
+        // Initial video embedding
+        updateVideo();
+    </script>
 {% endblock %}
