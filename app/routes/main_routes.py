@@ -20,6 +20,17 @@ def session(session_code):
         pass  # Implement as needed
     return render_template('session.html', session=session)
 
+@bp.route('/session/<session_code>/add_song', methods=['POST'])
+def add_song_to_queue(session_code):
+    song_title = request.form.get('song_title')
+    artist = request.form.get('artist')
+
+    if sessions.add_song_to_session_queue(session_code, song_title, artist):
+        return redirect(url_for('main.session', session_code=session_code))
+    else:
+        # Handle the case where the session does not exist or other errors
+        pass  # Implement as needed
+
 @bp.route('/search')
 def temp_search():
     return render_template('search.html')

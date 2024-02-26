@@ -29,7 +29,8 @@ class SongsQueue(db.Model):
     artist = db.Column(db.String(120), nullable=False)
     video_link = db.Column(db.String(255))
     video_thumbnail = db.Column(db.String(255))
-    added_by = db.Column(db.Integer, db.ForeignKey('participant.id'), nullable=False)
+    is_embeddable = db.Column(db.Boolean, default=False)
+    added_by = db.Column(db.Integer, db.ForeignKey('participant.id'), nullable=True)
     queued_at = db.Column(db.DateTime, default=db.func.now())
 
 class History(db.Model):

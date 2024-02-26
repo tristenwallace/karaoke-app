@@ -30,20 +30,18 @@
     </div>
 
     <!-- Add Songs to Queue -->
-    <div class="jumbotron p-4 mt-5">
-        <h3 class="text-center mb-4">Add Songs to Queue</h3>
-        <form>
+    <div class="jumbotron p4 mt-5">
+        <h3>Add a Song to the Queue</h3>
+        <form action="{{ url_for('main.add_song_to_queue', session_code=session.session_code) }}" method="post">
             <div class="form-group">
                 <label for="songTitle">Song Title</label>
-                <input type="text" class="form-control" id="songTitle" placeholder="Enter song title">
+                <input type="text" class="form-control" id="songTitle" name="song_title" required>
             </div>
             <div class="form-group">
                 <label for="artistName">Artist Name</label>
-                <input type="text" class="form-control" id="artistName" placeholder="Enter artist name">
+                <input type="text" class="form-control" id="artistName" name="artist" required>
             </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Add to Queue</button>
-            </div>
+            <button type="submit" class="btn btn-primary">Add to Queue</button>
         </form>
     </div>
 </div>
