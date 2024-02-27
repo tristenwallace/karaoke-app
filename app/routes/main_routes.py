@@ -19,7 +19,7 @@ def session(session_code):
     if session_obj is None:
         # Handle the case where the session does not exist
         return "Session not found", 404
-    song_queue = SongsQueue.query.filter_by(session_id=session_obj.id).all()
+    song_queue = SongsQueue.query.filter_by(session_id=session_obj.id).order_by(SongsQueue.order).all()
     return render_template('session.html', 
                             session=session_obj, 
                             song_queue=song_queue
