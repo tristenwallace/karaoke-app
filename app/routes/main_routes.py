@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, url_for, render_template, flash
+from flask import Blueprint, request, redirect, url_for, render_template, flash, jsonify
 from ..models import SongsQueue
 from app.services import sessions
 
@@ -39,6 +39,20 @@ def add_song_to_queue(session_code):
     else:
         flash(result['message'], 'danger')  # Display error message
         return redirect(url_for('main.session', session_code=session_code))
+
+
+@bp.route('/session/<session_code>/reorder', methods=['POST'])
+def reorder_queue(session_code):
+    data = request.json
+    dragged_id = data.get('draggedId')
+    target_id = data.get('targetId')
+
+    success, message = sessions.reorder_songs_in_queue(session_code, dragged_id, target_id)
+    if success:
+        return jsonify({'success': True}), 200
+    else:
+        return jsonify({'error': message}), 400 if message == "One or more songs not found" else 500
+
 
 
 # temporary route that has song search capabilities

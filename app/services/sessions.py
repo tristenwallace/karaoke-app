@@ -47,15 +47,51 @@ def add_song_to_session_queue(session_code, song_title, artist):
         video_thumbnail = search_result.get('thumbnail_url', '')
         is_embeddable = search_result.get('is_embeddable', '')
 
+        # Determine the new song's order by finding the current maximum order in the queue and adding 1
+        max_order = db.session.query(db.func.max(SongsQueue.order)).filter_by(session_id=session.id).scalar()
+        new_order = (max_order or 0) + 1
+
         new_song = SongsQueue(
             session_id=session.id,
             song_title=song_title,
             artist=artist,
             video_link=video_url,
             video_thumbnail=video_thumbnail,
-            is_embeddable=is_embeddable
+            is_embeddable=is_embeddable,
+            order=new_order  # Set the new song's order
         )
+        
         db.session.add(new_song)
         db.session.commit()
         return {'success':True}
     return {'success':False}
+
+
+def reorder_songs_in_queue(session_code, dragged_id, target_id):
+    session = Session.query.filter_by(session_code=session_code).first()
+    if not session:
+        return False, "Session not found"
+
+    try:
+        # Fetch all songs in the current session ordered by their current order
+        songs_in_queue = SongsQueue.query.filter_by(session_id=session.id).order_by(SongsQueue.order).all()
+        song_ids_in_order = [song.id for song in songs_in_queue]
+
+        # Find the current indexes of the dragged and target songs
+        dragged_index = song_ids_in_order.index(int(dragged_id))
+        target_index = song_ids_in_order.index(int(target_id))
+
+        # Move the dragged song to its new position
+        song_ids_in_order.insert(target_index, song_ids_in_order.pop(dragged_index))
+
+        # Update the order of all songs in the queue
+        for new_order, song_id in enumerate(song_ids_in_order, start=1):
+            song = SongsQueue.query.get(song_id)
+            song.order = new_order
+
+        db.session.commit()
+        
+        return True, None
+    except Exception as e:
+        db.session.rollback()
+        return False, str(e)

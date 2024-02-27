@@ -16,9 +16,9 @@
             <div class="col-lg-4">
                 <!-- Song Queue -->
                 <div id="songQueue" class="song-queue" style="max-height: 500px; overflow-y: auto;">
-                    <ul class="list-group">
+                    <ul class="list-group" id="queueList">
                         {% for song in song_queue %}
-                        <li class="list-group-item" data-video-link="{{ song.video_link }}" data-is-embeddable="{{ song.is_embeddable }}" data-video-thumbnail="{{ song.video_thumbnail }}">
+                        <li class="list-group-item d-flex justify-content-between align-items-center" draggable="true" data-id="{{ song.id }}" data-video-link="{{ song.video_link }}" data-is-embeddable="{{ song.is_embeddable }}" data-video-thumbnail="{{ song.video_thumbnail }}">
                             {{ song.song_title }} - {{ song.artist }}
                             {% if not song.is_embeddable %}
                             <a href="{{ song.video_link }}" target="_blank">Watch on YouTube</a>
@@ -65,7 +65,7 @@
         let currentSongIndex = 0;
         const songQueueItems = document.querySelectorAll('#songQueue .list-group-item');
         const videoContainer = document.getElementById('videoContainer');
-
+        
         function embedVideo(videoLink, isEmbeddable, thumbnailUrl) {
             if (isEmbeddable) {
                 videoContainer.innerHTML = `<iframe class="embed-responsive-item" src="${videoLink.replace('watch?v=', 'embed/')}" allowfullscreen></iframe>`;
@@ -99,7 +99,75 @@
                 updateVideo();
             }
         });
+        
 
+        let draggedItem = null;
+
+        // Ensure session_code is accessible in JavaScript. Define it here using Jinja.
+        const sessionCode = "{{ session.session_code }}";
+
+        document.querySelectorAll('.list-group-item').forEach(item => {
+            item.addEventListener('dragstart', function(e) {
+                draggedItem = this;
+                setTimeout(() => this.style.display = 'none', 0);
+            });
+
+            item.addEventListener('dragend', function(e) {
+                setTimeout(() => {
+                    draggedItem.style.display = 'block';
+                    draggedItem = null;
+                }, 0);
+            });
+
+            item.addEventListener('dragover', function(e) {
+                e.preventDefault();
+            });
+
+            item.addEventListener('dragenter', function(e) {
+                e.preventDefault();
+                this.style.background = '#f1f1f1';
+            });
+
+            item.addEventListener('dragleave', function(e) {
+                this.style.background = '#ffffff';
+            });
+
+            item.addEventListener('drop', function(e) {
+                this.style.background = '#ffffff';
+                if (this !== draggedItem) {
+                    let currentPos = Array.from(this.parentNode.children).indexOf(this);
+                    let draggedPos = Array.from(draggedItem.parentNode.children).indexOf(draggedItem);
+                    if (currentPos < draggedPos) {
+                        this.parentNode.insertBefore(draggedItem, this);
+                    } else {
+                        this.parentNode.insertBefore(draggedItem, this.nextSibling);
+                    }
+                    
+                    // Send the reorder request to the server
+                    fetch(`/session/${sessionCode}/reorder`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            draggedId: draggedItem.dataset.id,
+                            targetId: this.dataset.id
+                        }),
+                        credentials: 'same-origin'
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    }).then(data => {
+                        console.log('Reorder successful:', data);
+                    }).catch(error => {
+                        console.error('Reorder error:', error);
+                    });
+                }
+            });
+        });
+        
         // Initial video embedding
         updateVideo();
     </script>

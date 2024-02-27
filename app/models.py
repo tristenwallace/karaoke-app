@@ -3,7 +3,7 @@ from datetime import datetime
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    username = db.Column(db.String(80), unique=False, nullable=False) #FOR DEVELOPMENT: Host logic requires unique users
     email = db.Column(db.String(120), unique=True, nullable=True)
     history = db.relationship('History', backref='user', lazy=True)
     # Consider adding a relationship to Participant if needed
@@ -32,6 +32,7 @@ class SongsQueue(db.Model):
     is_embeddable = db.Column(db.Boolean, default=False)
     added_by = db.Column(db.Integer, db.ForeignKey('participant.id'), nullable=True)
     queued_at = db.Column(db.DateTime, default=db.func.now())
+    order = db.Column(db.Integer)
 
 class History(db.Model):
     id = db.Column(db.Integer, primary_key=True)
