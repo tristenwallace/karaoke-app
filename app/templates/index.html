@@ -3,9 +3,9 @@
 {% block title %}Home - Karaoke App{% endblock %}
 
 {% block content %}
-<div class="container-fluid half-height">
+<div class="container-fluid vh-100">
     <div class="row h-100">
-        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center bg-light">
+        <div class="col-md-12 d-flex flex-column justify-content-center align-items-center bg-light">
             <h2>Create a Session</h2>
             <form action="/" method="post">
                 <div class="form-group">
@@ -15,6 +15,7 @@
                 <button type="submit" class="btn btn-primary">Start Session</button>
             </form>
         </div>
+        <!-- TODO: Join a Session 
         <div class="col-md-6 d-flex flex-column justify-content-center align-items-center bg-dark text-white">
             <h2>Join a Session</h2>
             <form>
@@ -28,7 +29,8 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Join Session</button>
             </form>
-        </div>
+        </div> 
+        -->
     </div>
 </div>
 {% endblock %}
