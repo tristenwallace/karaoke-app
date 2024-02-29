@@ -1,77 +1,121 @@
-# Karaoke Flask Web App
+# Karaoke Queue Management System
 
-The Karaoke Flask Web App is a fun, interactive application allowing users to search for karaoke songs, start sessions, and invite friends to join. This application integrates with the YouTube API to fetch karaoke videos, enhancing the karaoke experience.
+The Karaoke Queue Management System is a fun, interactive application allowing users to better manage their home karaoke parties. This application integrates with the YouTube API to fetch karaoke videos, and then manages these videos in an interactive queue.
 
-## Features
+# Features
 
 - Song search via YouTube API
-- Session management for group karaoke experiences (TODO)
-- Queue system for song lineup (TODO)
-- User-friendly interface for seamless interaction (TODO)
+- Session management for group karaoke experiences
+- Queue system for song lineup
 - User accounts for tracking song and session history (TODO)
 - Lists for managing favorite songs (TODO)
+- Multi-user integration for shared sessions (TODO)
 
-## Getting Started
+# Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
+## Prerequisites
 
-- Python 3.8 or later
-- Flask
-- Docker (for containerization)
-- Google Cloud account (for deployment)
+Before you begin, ensure you have the following installed on your computer:
 
-### Setting Up for Development
+- Git
+- Docker
+- Docker Compose
 
-1. **Fork and Clone the repository**
+Knowledge in the following technologies will be beneficial:
 
-After forking the repo, you can clone it to your local machine.
+- Flask (Python web framework)
+- MySQL
+- JavaScript, HTML, and CSS
 
+## Installation
 
-2. **Configure Environment Variables**
+### 1. Clone the Repository
 
-Before running the application, ensure that all necessary environment variables are set. These include database connection settings, application secret keys, and other necessary configurations. These should be set in a .env file at the root of the project directory.
+Clone the project repository to your local machine using Git:
 
 ```
-YOUTUBE_API_KEY=youtube_api_key
+git clone https://github.com/tristenwallace/karaoke-queue-management.git
+cd karaoke-queue-management
+```
 
-MYSQL_ROOT_PASSWORD=your_root_password
-MYSQL_DATABASE=your_database_name
-MYSQL_USER=your_user_name
-MYSQL_PASSWORD=your_password
+### 2. Configure Environment Variables
+
+Before running the application, you need to set up the necessary environment variables. These variables are crucial for configuring the database connection, setting up the Flask application environment, and integrating external APIs.
+
+Create a .env file in the root directory of your project. This file will store your environment variables. Here's a template to get you started:
+
+```
+FLASK_APP=app.py
+FLASK_ENV=development  # Use 'production' for production environments
 DATABASE_HOST=db
-
+MYSQL_DATABASE=your_database_name
+MYSQL_USER=your_database_user
+MYSQL_PASSWORD=your_database_password
+MYSQL_ROOT_PASSWORD=your_root_password
+FLASK_SECRET_KEY=your_secret_key_here  # Generate a strong secret key for session management
+YOUTUBE_API_KEY=youtube_api_key
 ```
 
+Explanation of Variables:
+- FLASK_APP: Specifies the entry file of your Flask application.
+- FLASK_ENV: Sets the environment for the Flask app. Use development for development purposes and production for deploying your application.
+- DATABASE_HOST: The hostname of your MySQL database server, often localhost for local development (we're using 'db' in docker-compose.yml).
+- MYSQL_DATABASE: The name of the MySQL database you are connecting to.
+- MYSQL_USER: Your MySQL database username.
+- MYSQL_PASSWORD: The password for your MySQL database user.
+- MYSQL_ROOT_PASSWORD: The password for your MySQL root user.
+- FLASK_SECRET_KEY: A secret key used by Flask for securely signing the session cookie. Use a strong random value here.
+- YOUTUBE_API_KEY: (Optional) Required if you're integrating YouTube API features. Obtain this key from the Google Cloud Console by creating a project and enabling the YouTube Data API v3.
 
-3. **Start the Application**
+### 3. Initialize the Database
 
-With Docker and Docker Compose installed, and the environment variables configured, you can start the application by running the following command from the root of the project directory:
+After the containers are up, you need to set up the MySQL database schema and seed it with initial data if necessary. Execute the following commands:
 
 ```
-docker-compose up -d
-```
-This command builds and starts the containers in detached mode. Your application container and MySQL database container will be started.
+# Run database migrations
+docker-compose exec web flask db upgrade
 
-4. **Accessing the Application**
+# Seed the database (optional)
+docker-compose exec web flask seed-db
+```
+These commands will create the necessary tables and seed them with initial data for testing.
+
+## Usage
+
+With the application and database set up, you can start using the Karaoke Queue Management System. Here's how to interact with the system:
+
+### Accessing the Application
+
 After the containers are up and running, you can access the Flask application by running the following command from the root of the project directory:
 
 ```
 docker-compose exec web flask run
 ```
 
-Then navigate to `http://127.0.0.1:5000` in your web browser (assuming port 5000 is exposed in your docker-compose.yml).
+Then navigate to `http://localhost:5000` in your web browser. The port number (5000) might be different if you've configured it otherwise in the Docker settings or .env file.
 
 
+### Creating a Session
 
-### Deployed version on Google Cloud
+On the homepage, you can create a new karaoke session by entering your name and clicking the "Start Session" button. This action will generate a unique session in the karaoke database.
 
-The current version (V1.0.0) can currently be accessed at [https://karaoke-app-goaslfxq3a-uk.a.run.app/](https://karaoke-app-goaslfxq3a-uk.a.run.app/)
+<img src="app/static/images/homepage_v2.0.0.png" alt="Homepage" width="500"/>
+
+### Managing the Song Queue
+
+Once in a session, participants can add songs to the queue, and the host can manage the queue by playing songs and reordering the queue. Many Karaoke channels on Youtube don't allow 
+embedding of their videos, so at the moment the app simply provides a thumbnail and link for each video.
+
+<img src="app/static/images/session_page_v2.0.0.png" alt="Homepage" width="500"/>
+
+### Customization
+
+Feel free to customize the application to fit your needs better. You can modify the Flask application, HTML templates, and stylesheets located in the app directory.
 
 
 ## Acknowledgments
 
 - YouTube Data API for providing song search capabilities
 - Flask community for the extensive documentation and resources
-- Google Cloud Run for the seamless deployment experience
