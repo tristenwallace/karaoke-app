@@ -37,6 +37,11 @@ export function initializeSongQueueHandlers(sessionCode) {
 
     // Drag and Drop Handlers
     songQueueItems.forEach(item => {
+        // Skip if item is not draggable
+        if (item.getAttribute('draggable') === 'false') {
+            return;
+        }
+        
         item.addEventListener('dragstart', function(e) {
             draggedItem = this;
             setTimeout(() => this.classList.add('hide'), 0);

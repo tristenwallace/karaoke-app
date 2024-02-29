@@ -14,14 +14,20 @@
                     <!-- Video will be embedded here by JavaScript -->
                 </div>
             </div>
-            <div class="col-lg-4">
-                <!-- Song Queue -->
-
+            <div class="col-lg-4 mt-4">
                 <!-- Song Queue -->
                 <div id="songQueue" class="song-queue" style="max-height: 500px; overflow-y: auto;">
                     <ul class="list-group" id="queueList">
                         {% for song in song_queue %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center" draggable="true" data-id="{{ song.id }}" data-video-link="{{ song.video_link }}" data-is-embeddable="{{ song.is_embeddable }}" data-video-thumbnail="{{ song.video_thumbnail }}">
+                        <li class="list-group-item d-flex justify-content-between align-items-center {% if loop.first %}bg-info text-white{% endif %}" 
+                            draggable="{% if not loop.first %}true{% else %}false{% endif %}" 
+                            data-id="{{ song.id }}" 
+                            data-video-link="{{ song.video_link }}" 
+                            data-is-embeddable="{{ song.is_embeddable }}" 
+                            data-video-thumbnail="{{ song.video_thumbnail }}">
+                            {% if loop.first %}
+                            <span><strong>Currently Playing:</strong></span>
+                            {% endif %}
                             {{ song.song_title }} - {{ song.artist }}
                             {% if not song.is_embeddable %}
                             <a href="{{ song.video_link }}" target="_blank">Watch on YouTube</a>
