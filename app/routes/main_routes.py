@@ -19,7 +19,7 @@ def session(session_code):
     if session_obj is None:
         # Handle the case where the session does not exist
         return "Session not found", 404
-    song_queue = SongsQueue.query.filter_by(session_id=session_obj.id, played=True).order_by(SongsQueue.order).all()
+    song_queue = SongsQueue.query.filter_by(session_id=session_obj.id, played=False).order_by(SongsQueue.order).all()
     return render_template('session.html', 
                             session=session_obj, 
                             song_queue=song_queue
@@ -41,17 +41,15 @@ def add_song_to_queue(session_code):
         return redirect(url_for('main.session', session_code=session_code))
 
 
-@bp.route('/session/<session_code>/reorder', methods=['POST'])
-def reorder_queue(session_code):
-    data = request.json
-    dragged_id = data.get('draggedId')
-    target_id = data.get('targetId')
+@bp.route('/session/<session_code>/next_song', methods=['POST'])
+def next_song(session_code):
+    current_song_id = request.json.get('currentSongId')
+    result = sessions.advance_to_next_song(session_code, current_song_id)
 
-    success, message = sessions.reorder_songs_in_queue(session_code, dragged_id, target_id)
-    if success:
-        return jsonify({'success': True}), 200
+    if result['success']:
+        return jsonify(result), 200
     else:
-        return jsonify({'error': message}), 400 if message == "One or more songs not found" else 500
+        return jsonify({'success': False, 'message': result['message']}), 404 if result['message'] == 'End of queue' else 400
 
 
 

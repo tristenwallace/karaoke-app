@@ -95,3 +95,32 @@ def reorder_songs_in_queue(session_code, dragged_id, target_id):
     except Exception as e:
         db.session.rollback()
         return False, str(e)
+
+def advance_to_next_song(session_code, current_song_id):
+    current_song = SongsQueue.query.get(current_song_id)
+    if current_song:
+        # Mark the current song as played
+        current_song.played = True
+        db.session.commit()
+
+        # Fetch the next song in the queue
+        next_song = SongsQueue.query.filter(
+            SongsQueue.session_id == current_song.session_id,
+            SongsQueue.id > current_song_id,
+            SongsQueue.played == False
+        ).order_by(SongsQueue.order).first()
+
+        if next_song:
+            # Prepare and return the next song details
+            return {
+                'success': True,
+                'nextSongId': next_song.id,
+                'videoLink': next_song.video_link,
+                'isEmbeddable': next_song.is_embeddable,
+                'thumbnailUrl': next_song.video_thumbnail
+            }
+        else:
+            # No more songs in the queue
+            return {'success': False, 'message': 'End of queue'}
+    else:
+        return {'success': False, 'message': 'Current song not found'}

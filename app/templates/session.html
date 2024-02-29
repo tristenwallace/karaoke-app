@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container-fluid mt-4">
     {% if song_queue %}
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-4" id="videoQueue">
         <!-- Video and Queue Section -->
         <div class="row">
             <div class="col-lg-8">
@@ -19,7 +19,7 @@
                 <div id="songQueue" class="song-queue" style="max-height: 500px; overflow-y: auto;">
                     <ul class="list-group" id="queueList">
                         {% for song in song_queue %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center {% if loop.first %}bg-info text-white{% endif %}" 
+                        <li class="list-group-item d-flex justify-content-between align-items-center {% if loop.first %}bg-info text-white current{% endif %}" 
                             draggable="{% if not loop.first %}true{% else %}false{% endif %}" 
                             data-id="{{ song.id }}" 
                             data-video-link="{{ song.video_link }}" 
@@ -62,7 +62,7 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+                    <div class="alert alert-{{ category }} fade show mt-3">{{ message }}</div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
