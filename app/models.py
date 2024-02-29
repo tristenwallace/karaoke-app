@@ -14,6 +14,7 @@ class Session(db.Model):
     created_at = db.Column(db.DateTime, default=db.func.now())
     participants = db.relationship('Participant', backref='session', lazy=True)
     songs = db.relationship('SongsQueue', backref='session', lazy=True)
+    #currentSongIndex = db.
 
 class Participant(db.Model):
     id = db.Column(db.Integer, primary_key=True)

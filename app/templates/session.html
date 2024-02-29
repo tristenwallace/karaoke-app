@@ -4,6 +4,7 @@
 
 {% block content %}
 <div class="container-fluid mt-4">
+    {% if song_queue %}
     <div class="container-fluid mt-4">
         <!-- Video and Queue Section -->
         <div class="row">
@@ -14,6 +15,8 @@
                 </div>
             </div>
             <div class="col-lg-4">
+                <!-- Song Queue -->
+
                 <!-- Song Queue -->
                 <div id="songQueue" class="song-queue" style="max-height: 500px; overflow-y: auto;">
                     <ul class="list-group" id="queueList">
@@ -29,11 +32,12 @@
                 </div>
                 <!-- Queue Navigation Buttons -->
                 <div class="mt-2 d-flex justify-content-between">
-                    <button id="prevSong" class="btn btn-secondary">Previous</button>
-                    <button id="nextSong" class="btn btn-secondary">Next</button>
+                    <button id="nextSong" class="btn btn-secondary">Next Song</button>
                 </div>
             </div>
         </div>
+    </div>
+    {% endif %}
 
     <!-- Add Songs to Queue -->
     <div class="jumbotron p4 mt-5">

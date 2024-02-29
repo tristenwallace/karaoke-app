@@ -3,15 +3,7 @@ import { updateVideo, embedVideo } from './videoPlayer.js';
 export function initializeButtonHandlers() {
     let currentSongIndex = 0;
     const songQueueItems = document.querySelectorAll('#songQueue .list-group-item');
-    const prevSongButton = document.getElementById('prevSong');
     const nextSongButton = document.getElementById('nextSong');
-
-    prevSongButton.addEventListener('click', function() {
-        if (currentSongIndex > 0) {
-            currentSongIndex--;
-            updateVideo(currentSongIndex, '#songQueue .list-group-item', embedVideo);
-        }
-    });
 
     nextSongButton.addEventListener('click', function() {
         if (currentSongIndex < songQueueItems.length - 1) {
