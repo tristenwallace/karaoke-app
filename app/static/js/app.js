@@ -15,5 +15,5 @@ document.addEventListener('DOMContentLoaded', function () {
             const bsAlert = new bootstrap.Alert(alert); // Initialize the Bootstrap alert
             bsAlert.close(); // This will close the alert with Bootstrap's built-in fade effect
         });
-    }, 5000);
+    }, 3500);
 });

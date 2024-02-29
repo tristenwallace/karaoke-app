@@ -3,16 +3,16 @@
 {% block title %}Home - Karaoke App{% endblock %}
 
 {% block content %}
-<div class="container-fluid vh-100">
+<div class="container-fluid vh-100 pt-5">
     <div class="row h-100">
-        <div class="col-md-12 d-flex flex-column justify-content-center align-items-center bg-light">
-            <h2>Create a Session</h2>
+        <div class="home-container col-md-12 d-flex flex-column justify-content-center align-items-center bg-dark">
+            <h2 class="text-white">Create a Session</h2>
             <form action="/" method="post">
                 <div class="form-group">
-                    <label for="username">Your Name</label>
+                    <label class ="text-white" for="username">Your Name</label>
                     <input type="text" class="form-control" name="username" placeholder="Enter your name" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Start Session</button>
+                <button type="submit" class="btn btn-light">Start Session</button>
             </form>
         </div>
         <!-- TODO: Join a Session 

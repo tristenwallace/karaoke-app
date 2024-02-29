@@ -18,6 +18,7 @@ export function initializeButtonHandlers() {
                 credentials: 'same-origin'
             }).then(response => response.json())
             .then(data => {
+                console.log(`Success: ${data.success}, Message: ${data.message}`)
                 if (data.success) {
                     // Remove 'current' class from the current song
                     currentSongItem.classList.remove('current');
@@ -25,7 +26,7 @@ export function initializeButtonHandlers() {
                     // Remove the played song
                     currentSongItem.remove();
                     
-                    // Update vide with next song in queue
+                    // Update video with next song in queue
                     const nextSongItem = document.querySelector(`#songQueue .list-group-item[data-id="${data.nextSongId}"]`);
                     if (nextSongItem) {
                         nextSongItem.classList.add('current', 'bg-info', 'text-white');
@@ -43,7 +44,7 @@ export function initializeButtonHandlers() {
                             You've reached the end of the queue. Add more songs to keep the party going!
                         </div>
                     `;
-                    document.querySelector('.container-fluid.mt-4').appendChild(messageContainer);
+                    document.querySelector('.container-fluid.pt-5').appendChild(messageContainer);
                 }
             }).catch(error => {
                 console.error('Fetch error:', error);

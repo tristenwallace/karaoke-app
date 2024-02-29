@@ -2,3 +2,22 @@
 .half-height {
     height: 75vh; /* Set minimum height to 50% of the viewport height */
 }
+
+.home-container {
+    position: relative;
+    z-index: 1;
+}
+
+.home-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/static/images/karaoke-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1;  /* Adjust the transparency */
+    z-index: -1;
+}

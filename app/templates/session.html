@@ -3,18 +3,18 @@
 {% block title %}Session - Karaoke App{% endblock %}
 
 {% block content %}
-<div class="container-fluid mt-4">
+<div class="container-fluid pt-5">
     {% if song_queue %}
-    <div class="container-fluid mt-4" id="videoQueue">
+    <div class="container-fluid" id="videoQueue">
         <!-- Video and Queue Section -->
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-8 mt-5">
                 <!-- Video Container -->
                 <div id="videoContainer" class="embed-responsive embed-responsive-16by9">
                     <!-- Video will be embedded here by JavaScript -->
                 </div>
             </div>
-            <div class="col-lg-4 mt-4">
+            <div class="col-lg-4 mt-5">
                 <!-- Song Queue -->
                 <div id="songQueue" class="song-queue" style="max-height: 500px; overflow-y: auto;">
                     <ul class="list-group" id="queueList">
