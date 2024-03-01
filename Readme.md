@@ -13,15 +13,15 @@ The Karaoke Queue Management System is a fun, interactive application allowing u
 
 # Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. The code examples below assume your are running Ubuntu, but any OS can be used.
 
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your computer:
 
-- Git
-- Docker
-- Docker Compose
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://www.digitalocean.com/community/tutorial-collections/how-to-install-docker-compose)
 
 Knowledge in the following technologies will be beneficial:
 
@@ -67,20 +67,27 @@ Explanation of Variables:
 - MYSQL_PASSWORD: The password for your MySQL database user.
 - MYSQL_ROOT_PASSWORD: The password for your MySQL root user.
 - FLASK_SECRET_KEY: A secret key used by Flask for securely signing the session cookie. Use a strong random value here.
-- YOUTUBE_API_KEY: (Optional) Required if you're integrating YouTube API features. Obtain this key from the Google Cloud Console by creating a project and enabling the YouTube Data API v3.
+- YOUTUBE_API_KEY: (Optional) Required if you're integrating YouTube API features. Obtain this key from the [Google Cloud Console](https://console.cloud.google.com/) by creating a project and enabling the YouTube Data API v3.
 
 ### 3. Initialize the Database
 
-After the containers are up, you need to set up the MySQL database schema and seed it with initial data if necessary. Execute the following commands:
+After downloading the repo and add environment variables, you need to spin up the container and set up the MySQL database schema. You can seed it with initial data if necessary. Execute the following commands:
 
 ```
+# Spin up the container
+docker-composer up -d
+
+# Confirm the container is running
+docker-compose ps
+
 # Run database migrations
 docker-compose exec web flask db upgrade
 
 # Seed the database (optional)
 docker-compose exec web flask seed-db
 ```
-These commands will create the necessary tables and seed them with initial data for testing.
+
+These commands will create the necessary tables and seed them with initial data for testing. If you haven't added your username to the docker group, you'll need to run these commands with sudo.
 
 ## Usage
 
