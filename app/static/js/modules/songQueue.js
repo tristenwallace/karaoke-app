@@ -118,10 +118,7 @@ export function initializeSongQueueHandlers(sessionCode) {
                 } else {
                     songQueueList.insertBefore(draggedItem, this.nextSibling);
                 }
-                
-
-                // Re-bind event listeners to all list items
-                rebindEventListeners();
+            
 
                 // Send the reorder request to the server
                 fetch(`/session/${sessionCode}/reorder`, {

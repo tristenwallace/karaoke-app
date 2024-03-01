@@ -52,6 +52,18 @@ def next_song(session_code):
         return jsonify({'success': False, 'message': result['message']}), 404 if result['message'] == 'End of queue' else 400
 
 
+@bp.route('/session/<session_code>/reorder', methods=['POST'])
+def reorder_queue(session_code):
+    data = request.json
+    dragged_id = data.get('draggedId')
+    target_id = data.get('targetId')
+
+    success, message = sessions.reorder_songs_in_queue(session_code, dragged_id, target_id)
+    if success:
+        return jsonify({'success': True}), 200
+    else:
+        return jsonify({'error': message}), 400 if message == "One or more songs not found" else 500
+
 
 # temporary route that has song search capabilities
 @bp.route('/search')
