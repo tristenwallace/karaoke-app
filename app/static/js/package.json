@@ -1,0 +1,19 @@
+{
+  "name": "karaoke_app",
+  "version": "1.0.0",
+  "description": "The Karaoke Queue Management System is a fun, interactive application allowing users to better manage their home karaoke parties. This application integrates with the YouTube API to fetch karaoke videos, and then manages these videos in an interactive queue.",
+  "main": "app.js",
+  "scripts": {
+    "lint": "eslint '*/**/*.{js,jsx}'",
+    "format": "prettier --write '**/*.{js,jsx,json,css}'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "3.2.5"
+  }
+}
