@@ -72,7 +72,7 @@
 
 {% block scripts %}
     <script>
-    var sessionCode = "{{ session.session_code }}";
+    const sessionCode = "{{ session.session_code }}";
     </script>
     <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}
